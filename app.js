@@ -1,8 +1,13 @@
 require('dotenv').config();
 const express = require('express');
+const { urlencoded, json } = require('body-parser');
 const mongoose = require('mongoose');
+const router = require('./routes/router');
 
 const app = express();
+app.use(json());
+app.use(urlencoded({ extended: true }));
+app.use(router);
 
 const mongoDb = process.env.DB_KEY;
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
