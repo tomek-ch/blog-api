@@ -9,6 +9,7 @@ app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(router);
 
+mongoose.set('useFindAndModify', false);
 const mongoDb = process.env.DB_KEY;
 mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
 const db = mongoose.connection;
