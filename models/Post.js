@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { DateTime } = require('luxon');
 
 const Paragraph = new Schema({
     heading: String,
@@ -14,5 +15,11 @@ const Post = new Schema({
     paragraphs: [Paragraph],
     isPublished: Boolean,
 });
+
+Message
+    .virtual('time')
+    .get(function () {
+        return DateTime.fromMillis(this.timestamp).toLocaleString(DateTime.DATE_MED);
+    });
 
 module.exports = model('Post', Post);

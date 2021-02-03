@@ -1,4 +1,9 @@
 const { Schema, model } = require('mongoose');
+const { DateTime } = require('luxon');
+
+function formatTime() {
+    return DateTime.fromMillis(this.timestamp).toLocaleString(DateTime.DATE_MED);
+}
 
 const Response = new Schema({
     heading: String,
@@ -6,11 +11,17 @@ const Response = new Schema({
     timestamp: Number,
 });
 
+Response.virtual('time').get(formatTime);
+
+
 const Comment = new Schema({
     name: String,
     timestamp: Number,
     responses: [Response],
     text: String,
 });
+
+Comment.virtual('time').get(formatTime);
+
 
 module.exports = model('Comment', Comment);
