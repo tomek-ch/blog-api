@@ -11,7 +11,6 @@ const Post = new Schema({
     timestamp: Number,
     author: { type: Schema.Types.ObjectId, ref: 'Author' },
     tags: [String],
-    comments: { type: Schema.Types.ObjectId, ref: 'Comment' },
     paragraphs: [Paragraph],
     isPublished: Boolean,
 });

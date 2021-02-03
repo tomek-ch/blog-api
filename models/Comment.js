@@ -15,6 +15,7 @@ Response.virtual('time').get(formatTime);
 
 
 const Comment = new Schema({
+    post: { type: Schema.Types.ObjectId, ref: 'Post' },
     name: String,
     timestamp: Number,
     responses: [Response],
