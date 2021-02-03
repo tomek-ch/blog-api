@@ -10,6 +10,7 @@ const postList = require('../controllers/post/postList');
 const postDetail = require('../controllers/post/postDetail');
 const postCreate = require('../controllers/post/postCreate');
 const postUpdate = require('../controllers/post/postUpdate');
+const postDelete = require('../controllers/post/postDelete');
 
 router.get('/authors', authorList);
 router.get('/authors/:id', authorDetail);
@@ -21,5 +22,6 @@ router.get('/posts', postList);
 router.get('/posts/:id', postDetail);
 router.post('/posts', postCreate);
 router.put('/posts/:id', postUpdate);
+router.delete('/posts/:id', postDelete);
 
 module.exports = router;
