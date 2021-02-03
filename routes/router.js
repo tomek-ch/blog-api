@@ -7,6 +7,7 @@ const authorDetail = require('../controllers/author/authorDetail');
 const authorUpdate = require('../controllers/author/authorUpdate');
 const authorDelete = require('../controllers/author/authorDelete');
 const postList = require('../controllers/post/postList');
+const postDetail = require('../controllers/post/postDetail');
 const postCreate = require('../controllers/post/postCreate');
 
 router.get('/authors', authorList);
@@ -16,6 +17,7 @@ router.put('/authors/:id', authorUpdate);
 router.delete('/authors/:id', authorDelete);
 
 router.get('/posts', postList);
+router.get('/posts/:id', postDetail);
 router.post('/posts', postCreate);
 
 module.exports = router;
