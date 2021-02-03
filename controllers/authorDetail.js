@@ -14,6 +14,8 @@ module.exports = [
                 .status(400)
                 .json([errors[0].msg]);
 
-        res.json(await Author.findById(req.params.id).catch(next));
+        const author = await Author.findById(req.params.id).catch(next);
+        if (!author) res.status(404);
+        res.json(author);
     },
 ];
