@@ -1,4 +1,4 @@
-const Author = require('../models/Author');
+const Author = require('../../models/Author');
 const { param, validationResult } = require('express-validator');
 
 module.exports = [
@@ -14,6 +14,8 @@ module.exports = [
                 .status(400)
                 .json([errors[0].msg]);
 
-        res.json(await Author.findByIdAndDelete(req.params.id));
+        const author = await Author.findById(req.params.id).catch(next);
+        if (!author) res.status(404);
+        res.json(author);
     },
 ];

@@ -1,4 +1,4 @@
-const Author = require('../models/Author');
+const Author = require('../../models/Author');
 const { body, param, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
