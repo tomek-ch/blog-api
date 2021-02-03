@@ -21,23 +21,26 @@ module.exports = [
                 return Promise.reject('There was a network error');
             }
         }),
-    
+
     body('tags', 'Tags must be an array')
         .isArray()
         .optional(),
-    
+
     body('tags.*')
         .escape(),
 
     body('paragraphs', 'Please provide at least one paragraph')
         .isArray().bail()
         .isLength({ min: 1 }),
-    
+
     body('paragraphs.*.body', "Paragraph body can't be empty")
         .isLength({ min: 1 }),
 
     body('paragraphs.*.*')
         .escape(),
+
+    body('isPublished', 'Use a boolean value to determine whether a post is published')
+        .isBoolean(),
 
     async (req, res, next) => {
 
