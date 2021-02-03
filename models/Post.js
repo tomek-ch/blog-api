@@ -15,7 +15,7 @@ const Post = new Schema({
     isPublished: Boolean,
 });
 
-Message
+Post
     .virtual('time')
     .get(function () {
         return DateTime.fromMillis(this.timestamp).toLocaleString(DateTime.DATE_MED);
