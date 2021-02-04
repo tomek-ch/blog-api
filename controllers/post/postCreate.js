@@ -52,7 +52,9 @@ module.exports = [
 
         const { title, author, tags, paragraphs, isPublished } = req.body;
         try {
-            const newPost = await new Post({ title, author, tags, paragraphs, isPublished }).save();
+            const data = { title, author, tags, paragraphs, isPublished };
+            data.timestamp = Date.now();
+            const newPost = await new Post(data).save();
             res.json(newPost);
         } catch (e) {
             next(e);
