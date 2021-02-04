@@ -17,7 +17,7 @@ module.exports = [
 
         const [deletedAuthor] = await Promise.all([
             Author.findByIdAndDelete(req.params.id),
-            Post.deleteMany({ post: req.params.id }),
+            Post.deleteMany({ author: req.params.id }),
         ]).catch(next);
 
         res.json(deletedAuthor);
