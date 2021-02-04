@@ -50,9 +50,9 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const { title, author, tags, paragraphs } = req.body;
+        const { title, author, tags, paragraphs, isPublished } = req.body;
         try {
-            const newPost = await new Post({ title, author, tags, paragraphs }).save();
+            const newPost = await new Post({ title, author, tags, paragraphs, isPublished }).save();
             res.json(newPost);
         } catch (e) {
             next(e);
