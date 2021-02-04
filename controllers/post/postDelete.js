@@ -1,4 +1,5 @@
 const Post = require('../../models/Post');
+const Comment = require('../../models/Comment');
 const { param, validationResult } = require('express-validator');
 
 module.exports = [
@@ -14,6 +15,11 @@ module.exports = [
                 .status(400)
                 .json([errors[0].msg]);
 
-        res.json(await Post.findByIdAndDelete(req.params.id));
+        const [deletedPost] = await Promise.all([
+            Post.findByIdAndDelete(req.params.id),
+            Comment.deleteMany({ post: req.params.id }),
+        ]).catch(next);
+
+        res.json(deletedPost);
     },
 ];
