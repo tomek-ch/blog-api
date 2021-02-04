@@ -6,20 +6,19 @@ function formatTime() {
 }
 
 const Response = new Schema({
-    heading: String,
-    body: String,
-    timestamp: Number,
+    text: { type: String, required: true},
+    timestamp: { type: Number, required: true},
 });
 
 Response.virtual('time').get(formatTime);
 
 
 const Comment = new Schema({
-    post: { type: Schema.Types.ObjectId, ref: 'Post' },
-    name: String,
-    timestamp: Number,
+    post: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
+    name: { type: String, required: true },
+    timestamp: { type: Number, required: true },
     responses: [Response],
-    text: String,
+    text: { type: String, required: true },
 });
 
 Comment.virtual('time').get(formatTime);

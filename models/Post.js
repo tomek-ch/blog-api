@@ -3,16 +3,16 @@ const { DateTime } = require('luxon');
 
 const Paragraph = new Schema({
     heading: String,
-    body: String,
+    body: { type: String, required: true },
 });
 
 const Post = new Schema({
-    title: String,
-    timestamp: Number,
-    author: { type: Schema.Types.ObjectId, ref: 'Author' },
+    title: { type: String, required: true},
+    timestamp: { type: Number, required: true},
+    author: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
     tags: [String],
-    paragraphs: [Paragraph],
-    isPublished: Boolean,
+    paragraphs: { type: [Paragraph], required: true },
+    isPublished: { type: Boolean, required: true},
 });
 
 Post

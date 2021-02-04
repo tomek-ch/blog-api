@@ -1,10 +1,10 @@
 const { Schema, model } = require('mongoose');
 
 const Author = new Schema({
-    name: String,
+    name: { type: String, required: true},
     description: String,
-    password: String,
-    username: String,
+    password: { type: String, required: true},
+    username: { type: String, required: true},
 });
 
 module.exports = model('Author', Author);
