@@ -9,7 +9,6 @@ const Comment = new Schema({
     post: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
     name: { type: String, required: true },
     timestamp: { type: Number, required: true },
-    responses: [{ type: Schema.Types.ObjectId, ref: 'Response' }],
     text: { type: String, required: true },
 });
 
