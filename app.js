@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const router = require('./routes/router');
 
 const app = express();
+
+app.use((req, res, next) => console.log('aaa'));
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(router);

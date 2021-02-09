@@ -4,9 +4,13 @@ const bcrypt = require('bcryptjs');
 
 module.exports = [
 
-    body('name', 'Please enter a name')
+    body('firstName', 'Please enter your first name')
         .trim()
         .isLength({ min: 1 })
+        .escape(),
+
+    body('lastName')
+        .trim()
         .escape(),
 
     body('description', 'Please enter a description')
@@ -41,10 +45,12 @@ module.exports = [
                 .json(errors.map(err => err.msg));
 
 
-        const { name, description, username } = req.body;
+        const { firstName, lastName, description, username } = req.body;
         try {
             const password = await bcrypt.hash(req.body.password, 10);
-            const newAuthor = await new Author({ name, description, password, username }).save();
+            const newAuthor = await new Author({
+                firstName, lastName, description, password, username
+            }).save();
             res.json(newAuthor);
         } catch (e) {
             next(e);
