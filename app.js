@@ -1,12 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const { urlencoded, json } = require('body-parser');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const router = require('./routes/router');
 
 const app = express();
-
-app.use((req, res, next) => console.log('aaa'));
+app.use(cors({
+    origin: 'http://localhost:1234',
+}));
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(router);
