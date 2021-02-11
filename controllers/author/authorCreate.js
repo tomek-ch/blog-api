@@ -13,9 +13,8 @@ module.exports = [
         .trim()
         .escape(),
 
-    body('description', 'Please enter a description')
+    body('description')
         .trim()
-        .isLength({ min: 1 })
         .escape(),
 
     body('password', 'Please enter a password')
