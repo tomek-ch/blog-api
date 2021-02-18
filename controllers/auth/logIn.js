@@ -27,8 +27,9 @@ module.exports = [
             const user = await Author.findOne({ username: req.body.username });
             if (!user)
                 return res.status(400).json(["Username doesn't match any account"]);
-
-            if (!(await bcrypt.compare(user.password, req.body.password)))
+            
+            const passwordMatches = await bcrypt.compare(req.body.password, user.password);
+            if (!passwordMatches)
                 return res.status(400).json(['Incorrect password']);
             
             res.send(user);
