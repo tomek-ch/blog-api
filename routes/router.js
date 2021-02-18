@@ -16,6 +16,7 @@ const commentCreate = require('../controllers/comment/commentCreate');
 const commentDetail = require('../controllers/comment/commentDetail');
 const commentUpdate = require('../controllers/comment/commentUpdate');
 const commentDelete = require('../controllers/comment/commentDelete');
+const logIn = require('../controllers/auth/logIn');
 
 router.get('/authors', authorList);
 router.get('/authors/:id', authorDetail);
@@ -34,5 +35,7 @@ router.get('/comments/:id', commentDetail);
 router.post('/comments', commentCreate);
 router.put('/comments/:id', commentUpdate);
 router.delete('/comments/:id', commentDelete);
+
+router.post('/login', logIn);
 
 module.exports = router;
