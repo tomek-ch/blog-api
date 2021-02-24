@@ -1,4 +1,4 @@
-const Author = require('../../models/Author');
+const User = require('../../models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
@@ -24,7 +24,7 @@ module.exports = [
 
         try {
 
-            const user = await Author.findOne({ username: req.body.username });
+            const user = await User.findOne({ username: req.body.username });
             if (!user)
                 return res.status(400).json(["Username doesn't match any account"]);
             

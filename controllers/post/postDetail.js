@@ -14,7 +14,7 @@ module.exports = [
                 .status(400)
                 .json([errors[0].msg]);
 
-        const post = await Post.findById(req.params.id).populate('author').catch(next);
+        const post = await Post.findById(req.params.id).populate('user').catch(next);
         if (!post) res.status(404);
         res.json(post);
     },

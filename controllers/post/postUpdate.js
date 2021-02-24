@@ -1,4 +1,4 @@
-const Author = require('../../models/Author');
+const User = require('../../models/User');
 const Post = require('../../models/Post');
 const { body, validationResult, param } = require('express-validator');
 
@@ -11,15 +11,15 @@ module.exports = [
         .trim()
         .escape(),
 
-    body('author', 'Please provide an author')
+    body('user', 'Please provide an user')
         .trim()
         .optional()
         .isMongoId().bail()
         .escape()
         .custom(async id => {
             try {
-                if (!await Author.findById(id))
-                    return Promise.reject("Author doesn't exist");
+                if (!await User.findById(id))
+                    return Promise.reject("User doesn't exist");
             } catch {
                 return Promise.reject('There was a network error');
             }
@@ -54,7 +54,7 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const newData = ['title', 'author', 'tags', 'paragraphs', 'isPublished']
+        const newData = ['title', 'user', 'tags', 'paragraphs', 'isPublished']
             .reduce((obj, field) => req.body[field] ? {
                 [field]: req.body[field],
                 ...obj,

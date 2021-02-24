@@ -1,9 +1,9 @@
-const Author = require('../../models/Author');
+const User = require('../../models/User');
 const { param, validationResult } = require('express-validator');
 
 module.exports = [
 
-    param('id', 'Invalid author id')
+    param('id', 'Invalid user id')
         .isMongoId(),
 
     async (req, res, next) => {
@@ -14,8 +14,8 @@ module.exports = [
                 .status(400)
                 .json([errors[0].msg]);
 
-        const author = await Author.findById(req.params.id).catch(next);
-        if (!author) res.status(404);
-        res.json(author);
+        const user = await User.findById(req.params.id).catch(next);
+        if (!user) res.status(404);
+        res.json(user);
     },
 ];

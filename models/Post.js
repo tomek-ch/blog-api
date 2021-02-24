@@ -9,7 +9,7 @@ const Paragraph = new Schema({
 const Post = new Schema({
     title: { type: String, required: true},
     timestamp: { type: Number, required: true},
-    author: { type: Schema.Types.ObjectId, ref: 'Author', required: true },
+    author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     tags: [String],
     paragraphs: { type: [Paragraph], required: true },
     isPublished: { type: Boolean, required: true},

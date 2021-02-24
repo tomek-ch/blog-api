@@ -1,4 +1,4 @@
-const Author = require('../../models/Author');
+const User = require('../../models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 
@@ -28,7 +28,7 @@ module.exports = [
         .escape()
         .custom(async username => {
             try {
-                if (username && await Author.findOne({ username }))
+                if (username && await User.findOne({ username }))
                     return Promise.reject('Username taken');
             } catch {
                 return Promise.reject('There was a network error');
@@ -47,10 +47,10 @@ module.exports = [
         const { firstName, lastName, description, username } = req.body;
         try {
             const password = await bcrypt.hash(req.body.password, 10);
-            const newAuthor = await new Author({
+            const newUser = await new User({
                 firstName, lastName, description, password, username
             }).save();
-            res.json(newAuthor);
+            res.json(newUser);
         } catch (e) {
             next(e);
         }

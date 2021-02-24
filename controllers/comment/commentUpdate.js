@@ -29,7 +29,7 @@ module.exports = [
             }
         }),
 
-    body('name', "Please enter a name for comment's author")
+    body('name', "Please enter a name for comment's user")
         .trim()
         .escape(),
 
