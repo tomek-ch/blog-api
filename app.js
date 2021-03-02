@@ -7,7 +7,7 @@ const router = require('./routes/router');
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:1234',
+    origin: 'http://localhost:3000',
 }));
 app.use(json());
 app.use(urlencoded({ extended: true }));
@@ -25,5 +25,5 @@ app.use((err, req, res, next) => {
 
 app.use((req, res, next) => res.sendStatus(404));
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
