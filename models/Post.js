@@ -7,12 +7,12 @@ const Paragraph = new Schema({
 });
 
 const Post = new Schema({
-    title: { type: String, required: true},
-    timestamp: { type: Number, required: true},
+    title: { type: String, required: true },
+    timestamp: { type: Number, required: true },
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     tags: [String],
     paragraphs: { type: [Paragraph], required: true },
-    isPublished: { type: Boolean, required: true},
+    isPublished: { type: Boolean, required: true },
 });
 
 Post
@@ -21,4 +21,5 @@ Post
         return DateTime.fromMillis(this.timestamp).toLocaleString(DateTime.DATE_MED);
     });
 
+Post.set('toJSON', { virtuals: true });
 module.exports = model('Post', Post);
