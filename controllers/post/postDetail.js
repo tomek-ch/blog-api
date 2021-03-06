@@ -16,9 +16,9 @@ module.exports = [
 
         const post = await Post
             .findById(req.params.id)
-            .populate('user')
+            .populate('author')
             .catch(next);
-            
+
         if (!post) res.status(404);
         res.json(post);
     },
