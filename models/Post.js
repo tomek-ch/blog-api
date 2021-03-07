@@ -24,7 +24,7 @@ Post
 Post
     .virtual('readTime')
     .get(function () {
-        const getWordCount = str => str?.split(/\s+/).length;
+        const getWordCount = str => str?.split(/\s+/).filter(word => /\w/.test(word)).length;
         return Math.round(this.paragraphs.reduce((acc, { heading, body }) => (
             acc + getWordCount(heading) + getWordCount(body)
         ), 0) / 256);
