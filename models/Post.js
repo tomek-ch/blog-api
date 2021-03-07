@@ -21,5 +21,14 @@ Post
         return DateTime.fromMillis(this.timestamp).toLocaleString(DateTime.DATE_MED);
     });
 
+Post
+    .virtual('readTime')
+    .get(function () {
+        const getWordCount = str => str?.split(/\s+/).length;
+        return Math.round(this.paragraphs.reduce((acc, { heading, body }) => (
+            acc + getWordCount(heading) + getWordCount(body)
+        ), 0) / 256);
+    });
+
 Post.set('toJSON', { virtuals: true });
 module.exports = model('Post', Post);
