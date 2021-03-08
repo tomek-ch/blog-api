@@ -1,7 +1,7 @@
 const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('./models/User');
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
 passport.use(new LocalStrategy(

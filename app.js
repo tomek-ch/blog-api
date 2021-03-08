@@ -2,9 +2,9 @@ require('dotenv').config();
 const express = require('express');
 const { urlencoded, json } = require('body-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const router = require('./routes/router');
-require('./passport');
+require('./config/passport');
+require('./config/mongoose');
 
 const app = express();
 app.use(cors({
@@ -13,12 +13,6 @@ app.use(cors({
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(router);
-
-mongoose.set('useFindAndModify', false);
-const mongoDb = process.env.DB_KEY;
-mongoose.connect(mongoDb, { useUnifiedTopology: true, useNewUrlParser: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Mongo connection error'));
 
 app.use((err, req, res, next) => {
     res.sendStatus(500);
