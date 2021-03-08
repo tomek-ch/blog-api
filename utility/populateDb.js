@@ -1,5 +1,5 @@
-const User = require('./models/User');
-const Post = require('./models/Post');
+const User = require('../models/User');
+const Post = require('../models/Post');
 const bcrypt = require('bcryptjs');
 
 const userArgs = process.argv.slice(2);
