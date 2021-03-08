@@ -1,41 +1,21 @@
-const User = require('../../models/User');
-const { body, validationResult } = require('express-validator');
-const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const passport = require('passport');
 
-module.exports = [
+module.exports = async (req, res, next) => {
 
-    body('username', 'Please enter your username')
-        .trim()
-        .isLength({ min: 1 })
-        .escape(),
+    passport.authenticate('local', { session: false }, (err, user, info) => {
 
-    body('password', 'Please enter your password')
-        .trim()
-        .isLength({ min: 1 })
-        .escape(),
+        if (err) return next(err);
+        if (!user)
+            return res.status(400).json({
+                message: info.message,
+            });
 
-    async (req, res, next) => {
+        req.login(user, { session: false }, err => {
+            if (err) return next(err);
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+            return res.json({ user, token });
+        });
 
-        const errors = validationResult(req).array();
-        if (errors.length)
-            return res
-                .status(400)
-                .json(errors.map(err => err.msg));
-
-        try {
-
-            const user = await User.findOne({ username: req.body.username });
-            if (!user)
-                return res.status(400).json(["Username doesn't match any account"]);
-            
-            const passwordMatches = await bcrypt.compare(req.body.password, user.password);
-            if (!passwordMatches)
-                return res.status(400).json(['Incorrect password']);
-            
-            res.send(user);
-
-        } catch (e) {
-            next(e);
-        }
-    },
-];
+    })(req, res, next);
+};

@@ -4,6 +4,7 @@ const { urlencoded, json } = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const router = require('./routes/router');
+require('./passport');
 
 const app = express();
 app.use(cors({
