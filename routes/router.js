@@ -36,6 +36,6 @@ router.post('/comments', commentCreate);
 router.put('/comments/:id', commentUpdate);
 router.delete('/comments/:id', commentDelete);
 
-router.post('/login', logIn);
+router.post('/log-in', logIn);
 
 module.exports = router;
