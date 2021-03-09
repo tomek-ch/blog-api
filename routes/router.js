@@ -17,6 +17,7 @@ const commentDetail = require('../controllers/comment/commentDetail');
 const commentUpdate = require('../controllers/comment/commentUpdate');
 const commentDelete = require('../controllers/comment/commentDelete');
 const logIn = require('../controllers/auth/logIn');
+const verifyUser = require('../controllers/auth/user');
 
 router.get('/users', userList);
 router.get('/users/:id', userDetail);
@@ -37,5 +38,6 @@ router.put('/comments/:id', commentUpdate);
 router.delete('/comments/:id', commentDelete);
 
 router.post('/log-in', logIn);
+router.get('/verify-user', verifyUser);
 
 module.exports = router;
