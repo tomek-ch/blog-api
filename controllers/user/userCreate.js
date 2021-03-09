@@ -1,6 +1,7 @@
 const User = require('../../models/User');
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 module.exports = [
 
@@ -46,11 +47,15 @@ module.exports = [
 
         const { firstName, lastName, description, username } = req.body;
         try {
+            
             const password = await bcrypt.hash(req.body.password, 10);
-            const newUser = await new User({
+            const user = await new User({
                 firstName, lastName, description, password, username
             }).save();
-            res.json(newUser);
+
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+            res.json({ user, token });
+            
         } catch (e) {
             next(e);
         }
