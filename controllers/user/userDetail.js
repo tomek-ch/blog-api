@@ -1,4 +1,5 @@
 const User = require('../../models/User');
+const Post = require('../../models/Post');
 const { param, validationResult } = require('express-validator');
 
 module.exports = [
@@ -14,8 +15,12 @@ module.exports = [
                 .status(400)
                 .json([errors[0].msg]);
 
-        const user = await User.findById(req.params.id).catch(next);
+        const [user, posts] = await Promise.all([
+            User.findById(req.params.id),
+            Post.find({ author: req.params.id }),
+        ]).catch(next);
+
         if (!user) res.status(404);
-        res.json(user);
+        res.json({ user, posts });
     },
 ];
