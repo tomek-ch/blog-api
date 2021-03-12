@@ -1,9 +1,9 @@
 const Post = require('../../models/Post');
 
 module.exports = async (req, res, next) => {
-    const { user } = req.query;
+    const { user, tags } = req.query;
     try {
-        const posts = user ? await Post.find({ user }) : await Post.find();
+        const posts = await Post.find({ user, tags });
         res.json(posts);
     } catch (e) {
         next(e);
