@@ -1,8 +1,10 @@
-const User = require('../../models/User');
+const auth = require('../../middleware/authenticate');
 const Post = require('../../models/Post');
 const { body, validationResult } = require('express-validator');
 
 module.exports = [
+
+    auth,
 
     body('title', 'Please enter a title')
         .trim()
@@ -13,19 +15,6 @@ module.exports = [
         .trim()
         .isLength({ min: 1 })
         .escape(),
-
-    body('author', 'Please provide a user')
-        .trim()
-        .isMongoId().bail()
-        .escape()
-        .custom(async id => {
-            try {
-                if (!await User.findById(id))
-                    return Promise.reject("User doesn't exist");
-            } catch {
-                return Promise.reject('There was a network error');
-            }
-        }),
 
     body('tags', 'Tags must be an array')
         .isArray()
@@ -55,9 +44,9 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const { title, user, tags, paragraphs, isPublished, excerpt, author } = req.body;
+        const { title, user, tags, paragraphs, isPublished, excerpt } = req.body;
         try {
-            const data = { title, user, tags, paragraphs, isPublished, excerpt, author };
+            const data = { title, user, tags, paragraphs, isPublished, excerpt, author: req.user._id };
             data.timestamp = Date.now();
             const newPost = await new Post(data).save();
             res.json(newPost);
