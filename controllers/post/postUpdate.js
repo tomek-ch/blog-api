@@ -11,6 +11,10 @@ module.exports = [
         .trim()
         .escape(),
 
+    body('title', 'Please provide an excerpt')
+        .trim()
+        .escape(),
+
     body('user', 'Please provide an user')
         .trim()
         .optional()
@@ -41,7 +45,7 @@ module.exports = [
 
     body('paragraphs.*.*')
         .escape(),
-    
+
     body('isPublished', 'Use a boolean value to determine whether a post is published')
         .isBoolean()
         .optional(),

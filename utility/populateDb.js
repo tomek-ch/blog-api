@@ -37,6 +37,7 @@ async function populateDb() {
             },
         ],
         isPublished: true,
+        excerpt: 'Zostań mistrzem kociej tresury',
     });
 
     await Promise.all([user.save(), post.save()]);

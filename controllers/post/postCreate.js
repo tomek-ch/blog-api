@@ -9,6 +9,11 @@ module.exports = [
         .isLength({ min: 1 })
         .escape(),
 
+    body('title', 'Please provide an excerpt')
+        .trim()
+        .isLength({ min: 1 })
+        .escape(),
+
     body('user', 'Please provide an user')
         .trim()
         .isMongoId().bail()

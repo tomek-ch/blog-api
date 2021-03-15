@@ -13,6 +13,7 @@ const Post = new Schema({
     tags: [String],
     paragraphs: { type: [Paragraph], required: true },
     isPublished: { type: Boolean, required: true },
+    excerpt: { type: String, required: true },
 });
 
 Post
