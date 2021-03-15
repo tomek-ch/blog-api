@@ -14,7 +14,7 @@ module.exports = [
         .isLength({ min: 1 })
         .escape(),
 
-    body('user', 'Please provide an user')
+    body('user', 'Please provide a user')
         .trim()
         .isMongoId().bail()
         .escape()
