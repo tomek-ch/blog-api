@@ -31,6 +31,7 @@ module.exports = [
 
     body('tags', 'Tags must be an array')
         .isArray()
+        .isLength({ max: 5 })
         .optional(),
 
     body('tags.*')
