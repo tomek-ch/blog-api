@@ -9,12 +9,12 @@ module.exports = [
         .isLength({ min: 1 })
         .escape(),
 
-    body('title', 'Please provide an excerpt')
+    body('excerpt', 'Please provide an excerpt')
         .trim()
         .isLength({ min: 1 })
         .escape(),
 
-    body('user', 'Please provide a user')
+    body('author', 'Please provide a user')
         .trim()
         .isMongoId().bail()
         .escape()
@@ -55,9 +55,9 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const { title, user, tags, paragraphs, isPublished } = req.body;
+        const { title, user, tags, paragraphs, isPublished, excerpt, author } = req.body;
         try {
-            const data = { title, user, tags, paragraphs, isPublished };
+            const data = { title, user, tags, paragraphs, isPublished, excerpt, author };
             data.timestamp = Date.now();
             const newPost = await new Post(data).save();
             res.json(newPost);
