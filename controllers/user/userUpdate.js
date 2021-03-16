@@ -16,20 +16,16 @@ module.exports = [
         }),
 
     body('name')
-        .trim()
-        .escape(),
+        .trim(),
 
     body('description')
-        .trim()
-        .escape(),
+        .trim(),
 
     body('password')
-        .trim()
-        .escape(),
+        .trim(),
 
     body('username')
         .trim()
-        .escape()
         .custom(async username => {
             try {
                 if (username && await User.findOne({ username }))

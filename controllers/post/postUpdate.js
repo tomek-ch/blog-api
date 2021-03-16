@@ -8,18 +8,15 @@ module.exports = [
         .isMongoId(),
 
     body('title')
-        .trim()
-        .escape(),
+        .trim(),
 
     body('title', 'Please provide an excerpt')
-        .trim()
-        .escape(),
+        .trim(),
 
     body('user', 'Please provide a user')
         .trim()
         .optional()
         .isMongoId().bail()
-        .escape()
         .custom(async id => {
             try {
                 if (!await User.findById(id))
@@ -34,18 +31,12 @@ module.exports = [
         .isLength({ max: 5 })
         .optional(),
 
-    body('tags.*')
-        .escape(),
-
     body('paragraphs', 'Please provide at least one paragraph')
         .isArray()
         .optional(),
 
     body('paragraphs.*.body', "Paragraph body can't be empty")
         .isLength({ min: 1 }),
-
-    body('paragraphs.*.*')
-        .escape(),
 
     body('isPublished', 'Use a boolean value to determine whether a post is published')
         .isBoolean()

@@ -19,7 +19,6 @@ module.exports = [
         .trim()
         .optional()
         .isMongoId().bail()
-        .escape()
         .custom(async id => {
             try {
                 if (!await Post.findById(id))
@@ -30,12 +29,10 @@ module.exports = [
         }),
 
     body('name', "Please enter a name for comment's user")
-        .trim()
-        .escape(),
+        .trim(),
 
     body('text', 'Please enter a comment')
-        .trim()
-        .escape(),
+        .trim(),
 
     async (req, res, next) => {
 

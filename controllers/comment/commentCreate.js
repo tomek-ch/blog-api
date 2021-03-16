@@ -7,7 +7,6 @@ module.exports = [
     body('post', 'Please provide a post')
         .trim()
         .isMongoId().bail()
-        .escape()
         .custom(async id => {
             try {
                 if (!await Post.findById(id))
@@ -19,13 +18,11 @@ module.exports = [
 
     body('name', "Please enter a name for comment's user")
         .trim()
-        .isLength({ min: 1 })
-        .escape(),
+        .isLength({ min: 1 }),
 
     body('text', 'Please enter a comment')
         .trim()
-        .isLength({ min: 1 })
-        .escape(),
+        .isLength({ min: 1 }),
     
     async (req, res, next) => {
 

@@ -8,21 +8,16 @@ module.exports = [
 
     body('title', 'Please enter a title')
         .trim()
-        .isLength({ min: 1 })
-        .escape(),
+        .isLength({ min: 1 }),
 
     body('excerpt', 'Please provide an excerpt')
         .trim()
-        .isLength({ min: 1 })
-        .escape(),
+        .isLength({ min: 1 }),
 
     body('tags', 'Tags must be an array')
         .isArray()
         .isLength({ max: 5 })
         .optional(),
-
-    body('tags.*')
-        .escape(),
 
     body('paragraphs', 'Please provide at least one paragraph')
         .isArray().bail()
@@ -30,9 +25,6 @@ module.exports = [
 
     body('paragraphs.*.body', "Paragraph body can't be empty")
         .isLength({ min: 1 }),
-
-    body('paragraphs.*.*')
-        .escape(),
 
     body('isPublished', 'Use a boolean value to determine whether a post is published')
         .isBoolean(),

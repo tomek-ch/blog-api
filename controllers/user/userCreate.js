@@ -7,26 +7,21 @@ module.exports = [
 
     body('firstName', 'Please enter your first name')
         .trim()
-        .isLength({ min: 1 })
-        .escape(),
+        .isLength({ min: 1 }),
 
     body('lastName')
-        .trim()
-        .escape(),
+        .trim(),
 
     body('description')
-        .trim()
-        .escape(),
+        .trim(),
 
     body('password', 'Please enter a password')
         .trim()
-        .isLength({ min: 1 })
-        .escape(),
+        .isLength({ min: 1 }),
 
     body('username', 'Please enter a username')
         .trim()
         .isLength({ min: 1 })
-        .escape()
         .custom(async username => {
             try {
                 if (username && await User.findOne({ username }))
