@@ -19,6 +19,13 @@ module.exports = [
         .isLength({ max: 5 })
         .optional(),
 
+    body('tags.*', "Tags can't be longer than 20 characters")
+        .trim()
+        .isLength({ max: 20 }),
+
+    body('paragraphs.*.*')
+        .trim(),
+
     body('paragraphs', 'Please provide at least one paragraph')
         .isArray().bail()
         .isLength({ min: 1 }),

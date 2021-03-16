@@ -31,6 +31,9 @@ module.exports = [
         .isLength({ max: 5 })
         .optional(),
 
+    body('paragraphs.*.*')
+        .trim(),
+
     body('paragraphs', 'Please provide at least one paragraph')
         .isArray()
         .optional(),
@@ -41,6 +44,10 @@ module.exports = [
     body('isPublished', 'Use a boolean value to determine whether a post is published')
         .isBoolean()
         .optional(),
+
+    body('tags.*', "Tags can't be longer than 20 characters")
+        .trim()
+        .isLength({ max: 20 }),
 
     async (req, res, next) => {
 
