@@ -61,13 +61,8 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const newData = ['title', 'user', 'tags', 'paragraphs', 'isPublished', 'excerpt']
-            .reduce((obj, field) => req.body[field] ? {
-                [field]: req.body[field],
-                ...obj,
-            } : obj, {});
-
-        if (req.body.isPublished === false) newData.isPublished = false;
+        const { title, user, tags, paragraphs, isPublished, excerpt } = req.body;
+        const newData = { title, user, tags, paragraphs, isPublished, excerpt };
 
         try {
             const post = await Post.findByIdAndUpdate(req.params.id, newData, { new: true });

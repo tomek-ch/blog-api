@@ -43,12 +43,8 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-
-        const newData = ['name', 'description', 'username']
-            .reduce((obj, field) => req.body[field] ? {
-                [field]: req.body[field],
-                ...obj,
-            } : obj, {});
+        const { name, description, username } = req.body;
+        const newData = { name, description, username };
 
         try {
             if (req.body.password)

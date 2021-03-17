@@ -42,11 +42,8 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const newData = ['name', 'text', 'post']
-            .reduce((obj, field) => req.body[field] ? {
-                [field]: req.body[field],
-                ...obj,
-            } : obj, {});
+        const { name, text, post } = req.body;
+        const newData = { name, text, post };
 
         const comment = await Comment.findByIdAndUpdate(req.params.id, newData, { new: true }).catch(next);
         res.json(comment);
