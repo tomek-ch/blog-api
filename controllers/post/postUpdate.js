@@ -49,6 +49,10 @@ module.exports = [
         .trim()
         .isLength({ max: 20 }),
 
+    body('excerpt', 'Please provide an excerpt')
+        .trim()
+        .isLength({ max: 200 }),
+
     async (req, res, next) => {
 
         const errors = validationResult(req).array();
@@ -57,7 +61,7 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const newData = ['title', 'user', 'tags', 'paragraphs', 'isPublished']
+        const newData = ['title', 'user', 'tags', 'paragraphs', 'isPublished', 'excerpt']
             .reduce((obj, field) => req.body[field] ? {
                 [field]: req.body[field],
                 ...obj,

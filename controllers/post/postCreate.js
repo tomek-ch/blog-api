@@ -12,7 +12,7 @@ module.exports = [
 
     body('excerpt', 'Please provide an excerpt')
         .trim()
-        .isLength({ min: 1 }),
+        .isLength({ min: 1, max: 200 }),
 
     body('tags', 'Tags must be an array')
         .isArray()
