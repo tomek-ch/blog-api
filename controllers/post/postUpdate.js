@@ -1,8 +1,11 @@
 const User = require('../../models/User');
 const Post = require('../../models/Post');
 const { body, validationResult, param } = require('express-validator');
+const auth = require('../../middleware/authenticate');
 
 module.exports = [
+
+    auth,
 
     param('id', 'Invalid post id')
         .isMongoId(),
@@ -54,6 +57,10 @@ module.exports = [
         .isLength({ max: 200 }),
 
     async (req, res, next) => {
+
+        const post = await Post.findById(req.params.id).catch(next);
+        if (post.author.toString() !== req.user._id.toString())
+            return res.sendStatus(403);
 
         const errors = validationResult(req).array();
         if (errors.length)
