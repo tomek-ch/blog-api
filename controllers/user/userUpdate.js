@@ -11,12 +11,22 @@ module.exports = [
         .isMongoId().bail()
         .custom(async (id, { req }) => {
             try {
-                const user = await User.findById(id)
+                const user = await User.findById(id);
+
                 if (!user)
                     return Promise.reject("User doesn't exist");
                 if (req.user._id.toString() !== user._id.toString())
                     return Promise.reject('Unauthorized');
-            } catch (e ){
+
+                if (req.body.newPassword) {
+                    const { oldPassword } = req.body;
+
+                    if (!oldPassword)
+                        return Promise.reject('To set a new password provide the old one as well');
+                    if (!await bcrypt.compare(oldPassword, user.password))
+                        return Promise.reject('Old password is incorrect');
+                }
+            } catch (e) {
                 return Promise.reject('There was a network error');
             }
         }),
@@ -36,8 +46,7 @@ module.exports = [
         .isLength({ min: 1 })
         .optional(),
 
-    body('password')
-        .trim()
+    body('newPassword')
         .isLength({ min: 1 })
         .optional(),
 
@@ -73,9 +82,10 @@ module.exports = [
             return data;
         }, {});
 
+        const { newPassword } = req.body;
         try {
-            if (req.body.password)
-                newData.password = await bcrypt.hash(req.body.password, 10);
+            if (newPassword)
+                newData.password = await bcrypt.hash(req.body.newPassword, 10);
 
             const user = await User.findByIdAndUpdate(req.params.id, newData, { new: true });
             res.json(user);
