@@ -11,13 +11,18 @@ module.exports = [
         .isMongoId(),
 
     body('title')
-        .trim(),
+        .trim()
+        .optional()
+        .isLength({ min: 1 }),
 
     body('title', 'Please provide an excerpt')
-        .trim(),
+        .trim()
+        .optional()
+        .isLength({ min: 1 }),
 
     body('user', 'Please provide a user')
         .trim()
+        .isLength({ min: 1 })
         .optional()
         .isMongoId().bail()
         .custom(async id => {
@@ -31,14 +36,16 @@ module.exports = [
 
     body('tags', 'Tags must be an array')
         .isArray()
-        .isLength({ max: 5 })
+        .isLength({ min: 1, max: 5 })
         .optional(),
 
     body('paragraphs.*.*')
-        .trim(),
+        .trim()
+        .optional(),
 
     body('paragraphs', 'Please provide at least one paragraph')
         .isArray()
+        .isLength({ min: 1 })
         .optional(),
 
     body('paragraphs.*.body', "Paragraph body can't be empty")
@@ -50,11 +57,13 @@ module.exports = [
 
     body('tags.*', "Tags can't be longer than 20 characters")
         .trim()
-        .isLength({ max: 20 }),
+        .isLength({ min: 1, max: 20 })
+        .optional(),
 
     body('excerpt', 'Please provide an excerpt')
         .trim()
-        .isLength({ max: 200 }),
+        .optional()
+        .isLength({ min: 1, max: 200 }),
 
     async (req, res, next) => {
 
@@ -68,8 +77,13 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const { title, user, tags, paragraphs, isPublished, excerpt } = req.body;
-        const newData = { title, user, tags, paragraphs, isPublished, excerpt };
+        const newData = ['title', 'user', 'tags', 'paragraphs', 'isPublished', 'excerpt']
+            .reduce((data, field) => {
+                const value = req.body[field];
+                if (value !== undefined)
+                    return { ...data, [field]: value };
+                return data;
+            }, {});
 
         try {
             const post = await Post.findByIdAndUpdate(req.params.id, newData, { new: true });
