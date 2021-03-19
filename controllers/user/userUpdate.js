@@ -15,17 +15,30 @@ module.exports = [
             }
         }),
 
-    body('name')
-        .trim(),
+    body('fistName')
+        .trim()
+        .isLength({ min: 1 })
+        .optional(),
+
+    body('lastName')
+        .trim()
+        .isLength({ min: 1 })
+        .optional(),
 
     body('description')
-        .trim(),
+        .trim()
+        .isLength({ min: 1 })
+        .optional(),
 
     body('password')
-        .trim(),
+        .trim()
+        .isLength({ min: 1 })
+        .optional(),
 
     body('username')
         .trim()
+        .isLength({ min: 1 })
+        .optional()
         .custom(async username => {
             try {
                 if (username && await User.findOne({ username }))
@@ -43,8 +56,12 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const { name, description, username } = req.body;
-        const newData = { name, description, username };
+        const newData = ['firstName', 'lastName', 'description', 'username'].reduce((data, field) => {
+            const value = req.body[field];
+            if (value !== undefined)
+                return { ...data, [field]: value };
+            return data;
+        }, {});
 
         try {
             if (req.body.password)
