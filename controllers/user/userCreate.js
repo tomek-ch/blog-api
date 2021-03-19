@@ -16,7 +16,6 @@ module.exports = [
         .trim(),
 
     body('password', 'Please enter a password')
-        .trim()
         .isLength({ min: 1 }),
 
     body('username', 'Please enter a username')
