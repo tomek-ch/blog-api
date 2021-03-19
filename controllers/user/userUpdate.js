@@ -1,15 +1,21 @@
 const User = require('../../models/User');
 const { body, param, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
+const auth = require('../../middleware/authenticate');
 
 module.exports = [
 
+    auth,
+
     param('id', 'Invalid id')
         .isMongoId().bail()
-        .custom(async id => {
+        .custom(async (id, { req }) => {
             try {
-                if (!await User.findById(id))
+                const user = await User.findById(id)
+                if (!user)
                     return Promise.reject("User doesn't exist");
+                if (req.user._id.toString() !== user._id.toString())
+                    return Promise.reject('Unauthorized');
             } catch (e ){
                 return Promise.reject('There was a network error');
             }
@@ -51,6 +57,10 @@ module.exports = [
     async (req, res, next) => {
 
         const errors = validationResult(req).array();
+
+        if (errors.includes('Unauthorized'))
+            return res.sendStatus(403);
+
         if (errors.length)
             return res
                 .status(400)
