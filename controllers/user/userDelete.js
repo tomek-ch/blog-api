@@ -21,15 +21,18 @@ module.exports = [
             return res
                 .status(400)
                 .json([errors[0].msg]);
-            
 
-        const usersPosts = (await Post.find({ user: req.params.id })).map(post => post._id);
-        const [deletedUser] = await Promise.all([
-            User.findByIdAndDelete(req.params.id),
-            Post.deleteMany({ user: req.params.id }),
-            ...usersPosts.map(post => Comment.deleteMany({ post })),
-        ]).catch(next);
+        try {
+            const usersPosts = (await Post.find({ user: req.params.id })).map(post => post._id);
+            const [deletedUser] = await Promise.all([
+                User.findByIdAndDelete(req.params.id),
+                Post.deleteMany({ user: req.params.id }),
+                ...usersPosts.map(post => Comment.deleteMany({ post })),
+            ]).catch(next);
 
-        res.json(deletedUser);
+            res.json(deletedUser);
+        } catch (e) {
+            next(e);
+        }
     },
 ];
