@@ -2,13 +2,19 @@ const User = require('../../models/User');
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
 const { param, validationResult } = require('express-validator');
+const auth = require('../../middleware/authenticate');
 
 module.exports = [
+
+    auth,
 
     param('id', 'Invalid user id')
         .isMongoId(),
 
     async (req, res, next) => {
+
+        if (req.params.id !== req.user._id.toString())
+            return res.sendStatus(403);
 
         const errors = validationResult(req).array();
         if (errors.length)
