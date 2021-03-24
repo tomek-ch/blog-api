@@ -1,5 +1,6 @@
 const Comment = require('../../models/Comment');
 
 module.exports = async (req, res, next) => {
-    res.json(await Comment.find().catch(next));
+    const { post } = req.query;
+    res.json(await Comment.find({ post }).catch(next));
 };
