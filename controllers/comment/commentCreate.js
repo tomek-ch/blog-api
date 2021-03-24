@@ -1,8 +1,11 @@
 const Comment = require('../../models/Comment');
 const Post = require('../../models/Post');
 const { body, validationResult } = require('express-validator');
+const auth = require('../../middleware/authenticate');
 
 module.exports = [
+
+    auth,
 
     body('post', 'Please provide a post')
         .trim()
@@ -16,10 +19,6 @@ module.exports = [
             }
         }),
 
-    body('name', "Please enter a name for comment's user")
-        .trim()
-        .isLength({ min: 1 }),
-
     body('text', 'Please enter a comment')
         .trim()
         .isLength({ min: 1 }),
@@ -32,9 +31,13 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
         
-        const { post, name, text } = req.body;
-        const data = { post, name, text };
-        data.timestamp = Date.now();
+        const { post, text } = req.body;
+        const data = {
+            post,
+            text,
+            timestamp: Date.now(),
+            author: req.user._id,
+        };
 
         const newComment = await new Comment(data).save().catch(next);
         res.json(newComment);
