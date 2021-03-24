@@ -13,4 +13,5 @@ const Comment = new Schema({
 });
 
 Comment.virtual('time').get(formatTime);
+Comment.set('toJSON', { virtuals: true });
 module.exports = model('Comment', Comment);
