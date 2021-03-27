@@ -36,7 +36,7 @@ module.exports = [
 
     body('tags', 'Tags must be an array')
         .isArray()
-        .isLength({ min: 1, max: 5 })
+        .isLength({ max: 5 })
         .optional(),
 
     body('paragraphs.*.*')
