@@ -65,7 +65,7 @@ module.exports = [
 
     async (req, res, next) => {
 
-        const errors = validationResult(req).array();
+        const errors = validationResult(req).array().map(err => err.msg);
 
         if (errors.includes('Unauthorized'))
             return res.sendStatus(403);
@@ -73,7 +73,7 @@ module.exports = [
         if (errors.length)
             return res
                 .status(400)
-                .json(errors.map(err => err.msg));
+                .json(errors);
 
         const newData = ['firstName', 'lastName', 'description', 'username'].reduce((data, field) => {
             const value = req.body[field];
