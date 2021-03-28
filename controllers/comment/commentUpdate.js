@@ -1,5 +1,4 @@
 const Comment = require('../../models/Comment');
-const Post = require('../../models/Post');
 const { body, param, validationResult } = require('express-validator');
 
 module.exports = [
@@ -16,7 +15,8 @@ module.exports = [
         }),
 
     body('text', 'Please enter a comment')
-        .trim(),
+        .trim()
+        .isLength({ min: 1 }),
 
     async (req, res, next) => {
 
