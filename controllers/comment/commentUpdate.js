@@ -15,22 +15,6 @@ module.exports = [
             }
         }),
 
-    body('post', 'Please provide valid post id')
-        .trim()
-        .optional()
-        .isMongoId().bail()
-        .custom(async id => {
-            try {
-                if (!await Post.findById(id))
-                    return Promise.reject("Post doesn't exist");
-            } catch {
-                return Promise.reject('There was a network error');
-            }
-        }),
-
-    body('name', "Please enter a name for comment's user")
-        .trim(),
-
     body('text', 'Please enter a comment')
         .trim(),
 
@@ -42,8 +26,11 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const { name, text, post } = req.body;
-        const newData = { name, text, post };
+        const { text } = req.body;
+        const newData = {
+            text,
+            timestamp: Date.now(),
+        };
 
         const comment = await Comment.findByIdAndUpdate(req.params.id, newData, { new: true }).catch(next);
         res.json(comment);
