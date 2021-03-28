@@ -1,14 +1,20 @@
 const Comment = require('../../models/Comment');
 const { body, param, validationResult } = require('express-validator');
+const auth = require('../../middleware/authenticate');
 
 module.exports = [
 
+    auth,
+
     param('id', 'Please provide a valid comment id')
         .isMongoId().bail()
-        .custom(async id => {
+        .custom(async (id, { req }) => {
             try {
-                if (!await Comment.findById(id))
+                const comment = await Comment.findById(id);
+                if (!comment)
                     return Promise.reject("Comment doesn't exist");
+                if (comment.author.toString() !== req.user._id.toString())
+                    return Promise.reject('Unauthorized');
             } catch {
                 return Promise.reject('There was a network error');
             }
@@ -20,11 +26,14 @@ module.exports = [
 
     async (req, res, next) => {
 
-        const errors = validationResult(req).array();
+        const errors = validationResult(req).array().map(err => err.msg);        
+        if (errors.includes('Unauthorized'))
+            return res.sendStatus(403);
+
         if (errors.length)
             return res
                 .status(400)
-                .json(errors.map(err => err.msg));
+                .json(errors);
 
         const { text } = req.body;
         const newData = {
