@@ -10,6 +10,7 @@ const Comment = new Schema({
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     timestamp: { type: Number, required: true },
     text: { type: String, required: true },
+    replies: [{ type: Schema.Types.ObjectId, ref: 'Reply' }],
 });
 
 Comment.virtual('time').get(formatTime);
