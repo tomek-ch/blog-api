@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const Response = new Schema({
-    comment: { type: Schema.Types.ObjectId, ref: 'Comment' },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
     text: { type: String, required: true},
     timestamp: { type: Number, required: true},
 });
