@@ -26,7 +26,7 @@ module.exports = [
             const usersPosts = (await Post.find({ user: req.params.id })).map(post => post._id);
             const [deletedUser] = await Promise.all([
                 User.findByIdAndDelete(req.params.id),
-                Post.deleteMany({ user: req.params.id }),
+                Post.deleteMany({ author: req.params.id }),
                 ...usersPosts.map(post => Comment.deleteMany({ post })),
             ]).catch(next);
 
