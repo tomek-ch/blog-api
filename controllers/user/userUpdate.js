@@ -15,8 +15,6 @@ module.exports = [
 
                 if (!user)
                     return Promise.reject("User doesn't exist");
-                if (req.user._id.toString() !== user._id.toString())
-                    return Promise.reject('Unauthorized');
 
                 if (req.body.newPassword) {
                     const { oldPassword } = req.body;
@@ -65,15 +63,14 @@ module.exports = [
 
     async (req, res, next) => {
 
-        const errors = validationResult(req).array().map(err => err.msg);
-
-        if (errors.includes('Unauthorized'))
+        if (req.params.id !== req.user._id.toString())
             return res.sendStatus(403);
 
+        const errors = validationResult(req).array();
         if (errors.length)
             return res
                 .status(400)
-                .json(errors);
+                .json(errors.map(err => err.msg));
 
         const newData = ['firstName', 'lastName', 'description', 'username'].reduce((data, field) => {
             const value = req.body[field];
