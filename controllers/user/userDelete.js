@@ -28,7 +28,7 @@ module.exports = [
                 User.findByIdAndDelete(req.params.id),
                 Post.deleteMany({ author: req.params.id }),
                 ...usersPosts.map(post => Comment.deleteMany({ post })),
-            ]).catch(next);
+            ]);
 
             res.json(deletedUser);
         } catch (e) {
