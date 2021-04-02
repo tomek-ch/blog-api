@@ -1,6 +1,11 @@
 const Comment = require('../../models/Comment');
 
 module.exports = async (req, res, next) => {
-    const { post } = req.query;
-    res.json(await Comment.find({ post }).populate('author').populate('replies').catch(next));
+    try {
+        const { post } = req.query;
+        const comments = await Comment.find({ post }).populate('author');
+        res.json(comments);
+    } catch (e) {
+        next(e);
+    }
 };

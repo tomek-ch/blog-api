@@ -2,18 +2,33 @@ const Comment = require('../../models/Comment');
 const Post = require('../../models/Post');
 const { body, validationResult } = require('express-validator');
 const auth = require('../../middleware/authenticate');
+const { ObjectId } = require('mongoose').Types;
 
 module.exports = [
 
     auth,
 
-    body('post', 'Please provide a post')
+    body('post')
         .trim()
-        .isMongoId().bail()
-        .custom(async id => {
+        .custom(async (post, { req }) => {
             try {
-                if (!await Post.findById(id))
-                    return Promise.reject("Post doesn't exist");
+
+                const { comment } = req.body;
+                if (!post && !comment)
+                    return Promise.reject("Please provide a post or a comment that you're replying to");
+
+                if (post) {
+                    if (!ObjectId.isValid(post))
+                        return Promise.reject('Invalid post id');
+                    if (!await Post.findById(post))
+                        return Promise.reject("Post doesn't exist");
+
+                } else {
+                    if (!ObjectId.isValid(comment))
+                        return Promise.reject('Invalid comment id');
+                    if (!await Comment.findById(comment))
+                        return Promise.reject("Comment doesn't exist");
+                }
             } catch {
                 return Promise.reject('There was a network error');
             }
@@ -22,7 +37,7 @@ module.exports = [
     body('text', 'Please enter a comment')
         .trim()
         .isLength({ min: 1 }),
-    
+
     async (req, res, next) => {
 
         const errors = validationResult(req).array();
@@ -30,14 +45,23 @@ module.exports = [
             return res
                 .status(400)
                 .json(errors.map(err => err.msg));
-        
-        const { post, text } = req.body;
+
+        const { post, text, comment } = req.body;
         const data = {
-            post,
             text,
             timestamp: Date.now(),
             author: req.user._id,
         };
+
+
+        // Comment is a response to either a post or another comment
+        if (req.body.post) {
+            data.post = post;
+        } else {
+            data.comment = comment;
+        }
+
+        // If responding to another comment, update its replies
 
         const newComment = await new Comment(data).save().catch(next);
         res.json(newComment);
