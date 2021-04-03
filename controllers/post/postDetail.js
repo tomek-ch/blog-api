@@ -1,25 +1,27 @@
 const Post = require('../../models/Post');
-const { param, validationResult } = require('express-validator');
+const Comment = require('../../models/Comment');
+const { ObjectId } = require('mongoose').Types;
 
-module.exports = [
+module.exports = async (req, res, next) => {
 
-    param('id', 'Invalid post id')
-        .isMongoId(),
+    if (!ObjectId.isValid(req.params.id))
+        return res.sendStatus(404);
 
-    async (req, res, next) => {
-
-        const errors = validationResult(req).array();
-        if (errors.length)
-            return res
-                .status(400)
-                .json([errors[0].msg]);
-
-        const post = await Post
+    const [post, comments] = await Promise.all([
+        Post
             .findById(req.params.id)
+            .populate('author'),
+        Comment
+            .find({ post: req.params.id })
             .populate('author')
-            .catch(next);
+            .populate('replies'),
+    ]).catch(next);
 
-        if (!post) res.status(404);
-        res.json(post);
-    },
-];
+    if (!post)
+        res.sendStatus(404);
+
+    res.json({
+        post,
+        comments,
+    });
+};
