@@ -12,6 +12,7 @@ module.exports = async (req, res, next) => {
         Post.find({ author: req.params.id }),
     ]).catch(next);
 
-    if (!user) res.status(404);
-    res.json({ user, posts });
+    if (!user)
+        return res.sendStatus(404);
+    return res.json({ user, posts });
 };
