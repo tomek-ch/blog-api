@@ -14,7 +14,13 @@ module.exports = async (req, res, next) => {
         Comment
             .find({ post: req.params.id })
             .populate('author')
-            .populate('replies'),
+            .populate({ 
+                path: 'replies',
+                populate: {
+                  path: 'author',
+                  model: 'User',
+                },
+             }),
     ]).catch(next);
 
     if (!post)
