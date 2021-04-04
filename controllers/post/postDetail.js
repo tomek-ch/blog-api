@@ -18,9 +18,9 @@ module.exports = async (req, res, next) => {
     ]).catch(next);
 
     if (!post)
-        res.sendStatus(404);
+        return res.sendStatus(404);
 
-    res.json({
+    return res.json({
         post,
         comments,
     });
