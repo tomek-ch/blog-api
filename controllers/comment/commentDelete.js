@@ -1,4 +1,5 @@
 const Comment = require('../../models/Comment');
+const Reply = require('../../models/Reply');
 const { param, validationResult } = require('express-validator');
 const auth = require('../../middleware/authenticate');
 
@@ -21,8 +22,13 @@ module.exports = [
                 return res
                     .status(400)
                     .json([errors[0].msg]);
-    
-            res.json(await Comment.findByIdAndDelete(req.params.id));
+            
+            await Promise.all([
+                Comment.findByIdAndDelete(req.params.id),
+                Reply.deleteMany({ _id: { $in: comment.replies } }),
+            ]);
+
+            return res.json(comment);
         } catch (e) {
             next(e);
         }
