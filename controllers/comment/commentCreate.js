@@ -39,31 +39,33 @@ module.exports = [
         .isLength({ min: 1 }),
 
     async (req, res, next) => {
+        try {
+            const errors = validationResult(req).array();
+            if (errors.length)
+                return res
+                    .status(400)
+                    .json(errors.map(err => err.msg));
 
-        const errors = validationResult(req).array();
-        if (errors.length)
-            return res
-                .status(400)
-                .json(errors.map(err => err.msg));
-
-        const { post, text, comment } = req.body;
-        const data = {
-            text,
-            timestamp: Date.now(),
-            author: req.user._id,
-        };
+            const { post, text, comment } = req.body;
+            const data = {
+                text,
+                timestamp: Date.now(),
+                author: req.user._id,
+            };
 
 
-        // Comment is a response to either a post or another comment
-        if (req.body.post) {
-            data.post = post;
-        } else {
-            data.comment = comment;
+            // Comment is a response to either a post or another comment
+            if (req.body.post) {
+                data.post = post;
+            } else {
+                data.comment = comment;
+                await Comment.findByIdAndUpdate(comment, { $inc: { 'replyCount': 1 } });
+            }
+
+            const newComment = await new Comment(data).save();
+            return res.json(newComment);
+        } catch (e) {
+            next(e);
         }
-
-        // If responding to another comment, update its replies
-
-        const newComment = await new Comment(data).save().catch(next);
-        res.json(newComment);
     },
 ];

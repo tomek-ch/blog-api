@@ -15,7 +15,7 @@ const Comment = new Schema({
     },
     comment: {
         type: Schema.Types.ObjectId,
-        ref: 'Post',
+        ref: 'Comment',
         required: function () {
             return !this.post;
         },
@@ -23,6 +23,7 @@ const Comment = new Schema({
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     timestamp: { type: Number, required: true },
     text: { type: String, required: true },
+    replyCount: { type: Number, default: 0 },
 });
 
 Comment.virtual('time').get(formatTime);
