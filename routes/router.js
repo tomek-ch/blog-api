@@ -14,11 +14,8 @@ const postDelete = require('../controllers/post/postDelete');
 const commentCreate = require('../controllers/comment/commentCreate');
 const commentUpdate = require('../controllers/comment/commentUpdate');
 const commentDelete = require('../controllers/comment/commentDelete');
-const replyCreate = require('../controllers/reply/replyCreate');
-const replyDelete = require('../controllers/reply/replyDelete');
 const logIn = require('../controllers/auth/logIn');
 const verifyUser = require('../controllers/auth/user');
-const replyUpdate = require('../controllers/reply/replyUpdate');
 
 router.get('/users', userList);
 router.get('/users/:id', userDetail);
@@ -35,10 +32,6 @@ router.delete('/posts/:id', postDelete);
 router.post('/comments', commentCreate);
 router.put('/comments/:id', commentUpdate);
 router.delete('/comments/:id', commentDelete);
-
-router.post('/replies', replyCreate);
-router.put('/replies/:id', replyUpdate);
-router.delete('/replies/:id', replyDelete);
 
 router.post('/log-in', logIn);
 router.get('/verify-user', verifyUser);
