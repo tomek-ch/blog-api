@@ -1,26 +1,20 @@
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
-const { param, validationResult } = require('express-validator');
 const auth = require('../../middleware/authenticate');
+const { ObjectId } = require('mongoose').Types;
 
 module.exports = [
 
     auth,
 
-    param('id', 'Invalid post id')
-        .isMongoId(),
-
     async (req, res, next) => {
         try {
+            if (!ObjectId.isValid(req.params.id))
+                return res.status(400).json(['Invalid comment id']);
+
             const post = await Post.findById(req.params.id);
             if (req.user._id.toString() !== post.author.toString())
                 return res.sendStatus(403);
-    
-            const errors = validationResult(req).array();
-            if (errors.length)
-                return res
-                    .status(400)
-                    .json([errors[0].msg]);
     
             const replyIds = (await Comment.find({ comment: req.params.id })).map(com => com._id);
     
