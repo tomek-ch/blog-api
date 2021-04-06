@@ -20,8 +20,12 @@ module.exports = [
                 if (post) {
                     if (!ObjectId.isValid(post))
                         return Promise.reject('Invalid post id');
-                    if (!await Post.findById(post))
+
+                    const postData = await Post.findById(post);
+                    if (!postData)
                         return Promise.reject("Post doesn't exist");
+                    if (postData.comment)
+                        return Promise.reject('You can only reply to top level comments');
 
                 } else {
                     if (!ObjectId.isValid(comment))
