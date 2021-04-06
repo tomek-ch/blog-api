@@ -1,34 +1,30 @@
 const Comment = require('../../models/Comment');
-const Reply = require('../../models/Reply');
-const { param, validationResult } = require('express-validator');
 const auth = require('../../middleware/authenticate');
+const { ObjectId } = require('mongoose').Types;
 
 module.exports = [
 
     auth,
 
-    param('id', 'Invalid comment id')
-        .isMongoId(),
-
     async (req, res, next) => {
-        
+
         try {
+            if (!ObjectId.isValid(req.params.id))
+                return res.status(400).json(['Invalid comment id']);
+
             const comment = await Comment.findById(req.params.id);
             if (req.user._id.toString() !== comment.author.toString())
                 return res.sendStatus(403);
-    
-            const errors = validationResult(req).array();
-            if (errors.length)
-                return res
-                    .status(400)
-                    .json([errors[0].msg]);
-            
-            await Promise.all([
-                Comment.findByIdAndDelete(req.params.id),
-                Reply.deleteMany({ _id: { $in: comment.replies } }),
-            ]);
 
-            return res.json(comment);
+            const promises = [Comment.findByIdAndDelete(req.params.id)];
+            if (comment.comment) {
+                promises.push(Comment.findByIdAndUpdate(comment.comment, { $inc: { 'replyCount': -1 } }));
+            } else {
+                promises.push(Comment.deleteMany({ comment: req.params.id }));
+            }
+            
+            const [deletedComment] = await Promise.all(promises);
+            return res.json(deletedComment);
         } catch (e) {
             next(e);
         }

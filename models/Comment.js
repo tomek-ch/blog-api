@@ -6,11 +6,24 @@ function formatTime() {
 }
 
 const Comment = new Schema({
-    post: { type: Schema.Types.ObjectId, ref: 'Post', required: true },
+    post: {
+        type: Schema.Types.ObjectId,
+        ref: 'Post',
+        required: function () {
+            return !this.comment;
+        },
+    },
+    comment: {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
+        required: function () {
+            return !this.post;
+        },
+    },
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     timestamp: { type: Number, required: true },
     text: { type: String, required: true },
-    replies: [{ type: Schema.Types.ObjectId, ref: 'Reply' }],
+    replyCount: { type: Number, default: 0 },
 });
 
 Comment.virtual('time').get(formatTime);
