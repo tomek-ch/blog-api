@@ -53,7 +53,6 @@ module.exports = [
                 author: req.user._id,
             };
 
-
             // Comment is a response to either a post or another comment
             if (req.body.post) {
                 data.post = post;
