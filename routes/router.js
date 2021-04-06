@@ -14,6 +14,7 @@ const postDelete = require('../controllers/post/postDelete');
 const commentCreate = require('../controllers/comment/commentCreate');
 const commentUpdate = require('../controllers/comment/commentUpdate');
 const commentDelete = require('../controllers/comment/commentDelete');
+const commentList = require('../controllers/comment/commentList');
 const logIn = require('../controllers/auth/logIn');
 const verifyUser = require('../controllers/auth/user');
 
@@ -29,6 +30,7 @@ router.post('/posts', postCreate);
 router.put('/posts/:id', postUpdate);
 router.delete('/posts/:id', postDelete);
 
+router.get('/comments', commentList);
 router.post('/comments', commentCreate);
 router.put('/comments/:id', commentUpdate);
 router.delete('/comments/:id', commentDelete);
