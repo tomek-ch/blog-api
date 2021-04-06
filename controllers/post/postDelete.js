@@ -1,6 +1,5 @@
 const Post = require('../../models/Post');
 const Comment = require('../../models/Comment');
-const Reply = require('../../models/Reply');
 const { param, validationResult } = require('express-validator');
 const auth = require('../../middleware/authenticate');
 
@@ -23,13 +22,12 @@ module.exports = [
                     .status(400)
                     .json([errors[0].msg]);
     
-            const comments = await Comment.find({ post: req.params.id });
-            const replyIds = comments.reduce((ids, com) => [...ids, ...com.replies], []);
+            const replyIds = (await Comment.find({ comment: req.params.id })).map(com => com._id);
     
             const [deletedPost] = await Promise.all([
                 Post.findByIdAndDelete(req.params.id),
                 Comment.deleteMany({ post: req.params.id }),
-                Reply.deleteMany({ _id: { $in: replyIds } }),
+                Comment.deleteMany({ _id: { $in: replyIds } }),
             ]);
     
             res.json(deletedPost);
