@@ -14,9 +14,8 @@ module.exports = [
         .trim()
         .isLength({ min: 1, max: 200 }),
 
-    body('tags', 'Tags must be an array')
-        .isArray()
-        .isLength({ max: 5 })
+    body('tags', 'There can be 5 tags max')
+        .isArray({ max: 5 })
         .optional(),
 
     body('tags.*', "Tags can't be longer than 20 characters")

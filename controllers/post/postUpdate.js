@@ -33,10 +33,9 @@ module.exports = [
                 return Promise.reject('There was a network error');
             }
         }),
-
-    body('tags', 'Tags must be an array')
-        .isArray()
-        .isLength({ max: 5 })
+        
+    body('tags', 'There can be 5 tags max')
+        .isArray({ max: 5 })
         .optional(),
 
     body('paragraphs.*.*')
