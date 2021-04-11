@@ -12,19 +12,24 @@ module.exports = [
             if (!ObjectId.isValid(req.params.id))
                 return res.status(400).json(['Invalid comment id']);
 
-            const post = await Post.findById(req.params.id);
+            const [post, comments] = await Promise.all([
+                Post.findById(req.params.id),
+                Comment.find({ post: req.params.id }),
+            ]);
+            
             if (req.user._id.toString() !== post.author.toString())
                 return res.sendStatus(403);
-    
-            const replyIds = (await Comment.find({ comment: req.params.id })).map(com => com._id);
+
+            const commentIds = comments.map(com => com._id);
     
             const [deletedPost] = await Promise.all([
                 Post.findByIdAndDelete(req.params.id),
                 Comment.deleteMany({ post: req.params.id }),
-                Comment.deleteMany({ _id: { $in: replyIds } }),
+                // Delete replies to comments under post
+                Comment.deleteMany({ comment: { $in: commentIds } }),
             ]);
     
-            res.json(deletedPost);
+            return res.json(deletedPost);
         } catch (e) {
             next(e);
         }
