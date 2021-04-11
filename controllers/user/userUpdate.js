@@ -35,9 +35,7 @@ module.exports = [
         .optional(),
 
     body('lastName')
-        .trim()
-        .isLength({ min: 1 })
-        .optional(),
+        .trim(),
 
     body('description')
         .trim()
