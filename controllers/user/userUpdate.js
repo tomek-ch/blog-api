@@ -35,6 +35,7 @@ module.exports = [
         .optional(),
 
     body('lastName')
+        .optional()
         .trim(),
 
     body('description')
