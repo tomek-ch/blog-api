@@ -9,7 +9,7 @@ module.exports = async (req, res, next) => {
 
     const [user, posts] = await Promise.all([
         User.findById(req.params.id),
-        Post.find({ author: req.params.id }),
+        Post.find({ author: req.params.id, isPublished: true }),
     ]).catch(next);
 
     if (!user)
