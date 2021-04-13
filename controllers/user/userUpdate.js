@@ -29,27 +29,28 @@ module.exports = [
             }
         }),
 
-    body('fistName')
-        .trim()
-        .isLength({ min: 1 })
-        .optional(),
-
-    body('lastName')
+    body('fistName', 'Max length for first name is 20 characters')
         .optional()
-        .trim(),
-
-    body('description')
         .trim()
-        .isLength({ min: 1 })
+        .isLength({ min: 1, max: 20 }),
+
+    body('lastName', 'Max length for last name is 20 characters')
+        .optional()
+        .trim()
+        .isLength({ min: 1, max: 20 }),
+
+    body('description', 'Max length for profile description is 100 characters')
+        .trim()
+        .isLength({ min: 1, max: 100 })
         .optional(),
 
     body('newPassword')
         .isLength({ min: 1 })
         .optional(),
 
-    body('username')
+    body('username', 'Max length for username is 20 characters')
         .trim()
-        .isLength({ min: 1 })
+        .isLength({ min: 1, max: 20 })
         .optional()
         .custom(async username => {
             try {
