@@ -7,7 +7,7 @@ const Paragraph = new Schema({
 });
 
 const Post = new Schema({
-    title: { type: String, required: true },
+    title: { type: String, required: true, maxlength: 50 },
     timestamp: { type: Number, required: true },
     author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     tags: [String],

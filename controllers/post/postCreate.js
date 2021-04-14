@@ -8,7 +8,8 @@ module.exports = [
 
     body('title', 'Please enter a title')
         .trim()
-        .isLength({ min: 1 }),
+        .isLength({ min: 1 })
+        .isLength({ max: 50 }).withMessage('Max length for post title is 50 characters'),
 
     body('excerpt', 'Please provide an excerpt')
         .trim()
