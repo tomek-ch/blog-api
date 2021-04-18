@@ -1,14 +1,23 @@
 const Post = require('../../models/Post');
 
 module.exports = async (req, res, next) => {
-    const { author, tags } = req.query;
     try {
+        const { author, tags, title } = req.query;
+
+        const options = {
+            author,
+            tags,
+            title: title ? new RegExp(title, 'i') : undefined,
+            isPublished: true,
+        };
+
         const posts = await Post
-            .find({ author, tags, isPublished: true })
+            .find(options)
             .populate('author');
-            
+
         return res.json(posts);
+        
     } catch (e) {
-        next(e);
+        return next(e);
     }
 };
