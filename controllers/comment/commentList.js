@@ -10,8 +10,8 @@ module.exports = async (req, res, next) => {
                 .json(['Invalid comment id']);
 
         const comments = await Comment.find({ comment }).populate('author');
-        res.json(comments);
+        return res.json(comments);
     } catch (e) {
-        next(e);
+        return next(e);
     }
 };

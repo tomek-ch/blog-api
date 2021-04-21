@@ -85,9 +85,9 @@ module.exports = [
                 newData.password = await bcrypt.hash(req.body.newPassword, 10);
 
             const user = await User.findByIdAndUpdate(req.params.id, newData, { new: true });
-            res.json(user);
+            return res.json(user);
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

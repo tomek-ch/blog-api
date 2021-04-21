@@ -31,7 +31,7 @@ module.exports = [
     
             return res.json(deletedPost);
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

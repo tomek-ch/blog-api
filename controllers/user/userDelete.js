@@ -40,9 +40,9 @@ module.exports = [
                 ...usersPosts.map(post => Comment.deleteMany({ post })),
             ]);
 
-            res.json(deletedUser);
+            return res.json(deletedUser);
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

@@ -26,7 +26,7 @@ module.exports = [
             const [deletedComment] = await Promise.all(promises);
             return res.json(deletedComment);
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

@@ -87,9 +87,9 @@ module.exports = [
 
         try {
             const post = await Post.findByIdAndUpdate(req.params.id, newData, { new: true });
-            res.json(post);
+            return res.json(post);
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

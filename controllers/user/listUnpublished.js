@@ -15,13 +15,13 @@ module.exports = [
                     .populate('comment'),
             ]);
 
-            res.json({
+            return res.json({
                 published: posts.filter(post => post.isPublished),
                 unpublished: posts.filter(post => !post.isPublished),
                 comments,
             });
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

@@ -11,6 +11,6 @@ module.exports = async (req, res, next) => {
         return res.json(await User.find());
         
     } catch (e) {
-        next(e);
+        return next(e);
     }
 };

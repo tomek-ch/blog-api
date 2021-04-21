@@ -16,7 +16,7 @@ app.use(router);
 
 app.use((err, req, res, next) => {
     console.log(err);
-    res.sendStatus(500);
+    return res.sendStatus(500);
 });
 
 app.use((req, res, next) => res.sendStatus(404));

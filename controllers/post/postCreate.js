@@ -49,9 +49,9 @@ module.exports = [
             const data = { title, user, tags, paragraphs, isPublished, excerpt, author: req.user._id };
             data.timestamp = Date.now();
             const newPost = await new Post(data).save();
-            res.json(newPost);
+            return res.json(newPost);
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

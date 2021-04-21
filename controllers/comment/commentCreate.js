@@ -68,7 +68,7 @@ module.exports = [
             const newComment = await new Comment(data).save();
             return res.json(newComment);
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];

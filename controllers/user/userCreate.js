@@ -55,10 +55,10 @@ module.exports = [
             }).save();
 
             const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-            res.json({ user, token });
+            return res.json({ user, token });
 
         } catch (e) {
-            next(e);
+            return next(e);
         }
     },
 ];
