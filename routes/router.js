@@ -20,7 +20,7 @@ const verifyUser = require('../controllers/auth/user');
 const listUnpublished = require('../controllers/user/listUnpublished');
 
 router.get('/users', userList);
-router.get('/users/:id', userDetail);
+router.get('/users/:username', userDetail);
 router.post('/users', userCreate);
 router.put('/users/:id', userUpdate);
 router.delete('/users/:id', userDelete);
