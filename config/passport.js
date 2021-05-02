@@ -10,14 +10,18 @@ passport.use(new LocalStrategy(
         passwordField: 'password',
     },
     async (username, password, done) => {
-        const user = await User.findOne({ username }).catch(done);
-
-        if (!user)
-            return done(null, false, { message: 'User does not exist' });
-        if (!await bcrypt.compare(password, user.password))
-            return done(null, false, { message: 'Incorrect password' });
-
-        return done(null, user);
+        try {
+            const user = await User.findOne({ username });
+    
+            if (!user)
+                return done(null, false, { message: 'User does not exist' });
+            if (!await bcrypt.compare(password, user.password))
+                return done(null, false, { message: 'Incorrect password' });
+    
+            return done(null, user);
+        } catch (e) {
+            done(e);
+        }
     }
 ));
 
