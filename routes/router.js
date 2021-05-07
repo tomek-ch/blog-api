@@ -17,7 +17,6 @@ const commentDelete = require('../controllers/comment/commentDelete');
 const commentList = require('../controllers/comment/commentList');
 const logIn = require('../controllers/auth/logIn');
 const verifyUser = require('../controllers/auth/user');
-const listUnpublished = require('../controllers/user/listUnpublished');
 
 router.get('/users', userList);
 router.get('/users/:username', userDetail);
@@ -38,6 +37,5 @@ router.delete('/comments/:id', commentDelete);
 
 router.post('/log-in', logIn);
 router.get('/verify-user', verifyUser);
-router.get('/list-unpublished', listUnpublished);
 
 module.exports = router;

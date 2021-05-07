@@ -1,23 +1,37 @@
 const Post = require('../../models/Post');
+const auth = require('../../middleware/authenticate');
 
-module.exports = async (req, res, next) => {
-    try {
-        const { author, tags, title } = req.query;
+module.exports = [
+    async (req, res, next) => {
+        try {
 
-        const options = {
-            author,
-            tags,
-            title: title ? new RegExp(title, 'i') : undefined,
-            isPublished: true,
-        };
+            if (req.headers.authorization)
+                return next();
 
-        const posts = await Post
-            .find(options)
-            .populate('author');
+            const { author, tags, title } = req.query;
 
-        return res.json(posts);
-        
-    } catch (e) {
-        return next(e);
-    }
-};
+            const options = {
+                author,
+                tags,
+                title: title ? new RegExp(title, 'i') : undefined,
+                isPublished: true,
+            };
+
+            const posts = await Post
+                .find(options)
+                .populate('author');
+
+            return res.json(posts);
+
+        } catch (e) {
+            return next(e);
+        }
+    },
+
+    auth,
+
+    async (req, res, next) => res.json(await Post.find({
+        author: req.user._id,
+        isPublished: false,
+    }).catch(next)),
+];
