@@ -9,7 +9,7 @@ const helmet = require('helmet');
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: app.settings.env === 'development' ? 'http://localhost:3000' : 'https://blogg-nine.vercel.app',
 }));
 app.use(json());
 app.use(urlencoded({ extended: true }));
