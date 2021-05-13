@@ -13,7 +13,8 @@ module.exports = async (req, res, next) => {
             .populate('author'),
         Comment
             .find({ post: req.params.id })
-            .populate('author'),
+            .populate('author')
+            .sort({ timestamp: 'desc' }),
     ]).catch(next);
 
     if (!post)
