@@ -16,9 +16,10 @@ module.exports = [
                 title: title ? new RegExp(title, 'i') : undefined,
                 isPublished: true,
             };
-
+            
             const posts = await Post
                 .find(options)
+                .sort({ 'timestamp': 'desc' })
                 .populate('author');
 
             return res.json(posts);

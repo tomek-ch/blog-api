@@ -7,7 +7,10 @@ module.exports = async (req, res, next) => {
         if (!user)
             return res.sendStatus(404);
 
-        const posts = await Post.find({ author: user._id, isPublished: true });
+        const posts = await Post
+            .find({ author: user._id, isPublished: true })
+            .sort({ 'timestamp': 'desc' });
+            
         return res.json({ user, posts });
 
     } catch (e) {
