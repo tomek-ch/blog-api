@@ -36,12 +36,8 @@ module.exports = [
                 .json(errors);
 
         const { text } = req.body;
-        const newData = {
-            text,
-            timestamp: Date.now(),
-        };
 
-        const comment = await Comment.findByIdAndUpdate(req.params.id, newData, { new: true }).catch(next);
+        const comment = await Comment.findByIdAndUpdate(req.params.id, { text }, { new: true }).catch(next);
         res.json(comment);
     },
 ];
