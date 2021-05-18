@@ -1,5 +1,6 @@
 const Post = require('../../models/Post');
 const auth = require('../../middleware/authenticate');
+const { ObjectId } = require('mongoose').Types;
 
 module.exports = [
     async (req, res, next) => {
@@ -10,13 +11,18 @@ module.exports = [
 
             const { author, tags, title } = req.query;
 
+            if (author && !ObjectId.isValid(author))
+                return res
+                    .status(400)
+                    .json(['Invalid author id']);
+
             const options = {
                 author,
-                tags,
-                title: title ? new RegExp(title, 'i') : undefined,
+                tags: tags?.toString(),
+                title: title ? new RegExp(title?.toString(), 'i') : undefined,
                 isPublished: true,
             };
-            
+
             const posts = await Post
                 .find(options)
                 .sort({ 'timestamp': 'desc' })
