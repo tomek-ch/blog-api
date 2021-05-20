@@ -14,7 +14,7 @@ module.exports = [
 
     body('lastName', 'Max length for last name is 20 characters')
         .optional()
-        .isLength({ min: 1, max: 20 })
+        .isLength({ max: 20 })
         .trim(),
 
     body('description', 'Max length for profile description is 100 characters')
