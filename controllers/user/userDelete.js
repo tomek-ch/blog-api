@@ -13,7 +13,7 @@ module.exports = [
         .isMongoId().bail()
         .custom(async (id, { req }) => {
             try {
-                const user = await User.findById(id);
+                const user = await User.findById(id).select('+password');
                 if (!await bcrypt.compare(req.body.password, user.password))
                     return Promise.reject('Password is incorrect');
             } catch (e) {

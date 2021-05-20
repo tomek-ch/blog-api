@@ -11,7 +11,7 @@ module.exports = [
         .isMongoId().bail()
         .custom(async (id, { req }) => {
             try {
-                const user = await User.findById(id);
+                const user = await User.findById(id).select('+password');
 
                 if (!user)
                     return Promise.reject("User doesn't exist");

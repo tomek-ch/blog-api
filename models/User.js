@@ -4,7 +4,7 @@ const User = new Schema({
     firstName: { type: String, required: true, maxLength: 15 },
     lastName: { type: String, maxLength: 15 },
     description: { type: String, maxLength: 100 },
-    password: { type: String, required: true },
+    password: { type: String, required: true, select: false },
     username: { type: String, required: true, maxLength: 15 },
 });
 
