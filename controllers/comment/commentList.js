@@ -20,12 +20,14 @@ module.exports = [
                 .json(errors.map(err => err.msg));
 
         try {
-            const { comment, author } = req.query;
-            const comments = await Comment.find({ comment, author })
+            const { comment, author, getPost } = req.query;
+            const query = Comment.find({ comment, author })
                 .populate('author')
                 .populate('comment');
 
+            const comments = getPost ? await query.populate('post') : await query;
             return res.json(comments);
+            
         } catch (e) {
             return next(e);
         }
