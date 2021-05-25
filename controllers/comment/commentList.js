@@ -20,8 +20,9 @@ module.exports = [
                 .json(errors.map(err => err.msg));
 
         try {
-            const { comment, author, getPost } = req.query;
+            const { comment, author, getPost, newest } = req.query;
             const query = Comment.find({ comment, author })
+                .sort({ timestamp: newest ? -1 : 1 })
                 .populate('author')
                 .populate('comment');
 
