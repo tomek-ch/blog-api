@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const { DateTime } = require('luxon');
 
 const Paragraph = new Schema({
-    heading: String,
+    heading: { type: String, maxlength: 50 },
     body: { type: String, required: true },
 });
 

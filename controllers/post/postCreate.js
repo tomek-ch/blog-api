@@ -23,15 +23,17 @@ module.exports = [
         .trim()
         .isLength({ max: 20 }),
 
-    body('paragraphs.*.*')
-        .trim(),
-
     body('paragraphs', 'Please provide at least one paragraph')
         .isArray().bail()
         .isLength({ min: 1 }),
 
     body('paragraphs.*.body', "Paragraph body can't be empty")
+        .trim()
         .isLength({ min: 1 }),
+
+    body('paragraphs.*.heading', "Paragraph heading can't be longer than 50 characters")
+        .trim()
+        .isLength({ max: 1, max: 50 }),
 
     body('isPublished', 'Use a boolean value to determine whether a post is published')
         .isBoolean(),

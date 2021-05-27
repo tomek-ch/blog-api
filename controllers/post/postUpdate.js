@@ -34,7 +34,7 @@ module.exports = [
                 return Promise.reject('There was a network error');
             }
         }),
-        
+
     body('tags', 'There can be 5 tags max')
         .isArray({ max: 5 })
         .optional(),
@@ -48,7 +48,14 @@ module.exports = [
         .isLength({ min: 1 })
         .optional(),
 
+    body('paragraphs.*.heading', "Paragraph heading can't be longer than 50 characters")
+        .optional()
+        .trim()
+        .isLength({ max: 50 }),
+
     body('paragraphs.*.body', "Paragraph body can't be empty")
+        .optional()
+        .trim()
         .isLength({ min: 1 }),
 
     body('isPublished', 'Use a boolean value to determine whether a post is published')
