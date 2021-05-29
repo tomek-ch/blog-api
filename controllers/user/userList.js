@@ -5,7 +5,7 @@ module.exports = async (req, res, next) => {
 
     try {
         if (username) {
-            const regex = new RegExp(username, 'i');
+            const regex = new RegExp(`^${username}`, 'i');
             return res.json(await User.find({ username: regex }));
         }
         return res.json(await User.find());

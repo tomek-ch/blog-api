@@ -19,7 +19,7 @@ module.exports = [
             const options = {
                 author,
                 tags: tags?.toString(),
-                title: title ? new RegExp(title?.toString(), 'i') : undefined,
+                title: title ? new RegExp(`^${title?.toString()}`, 'i') : undefined,
                 isPublished: true,
             };
 
