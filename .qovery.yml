@@ -1,0 +1,11 @@
+---
+application:
+  name: "blog-api"
+  project: "blogg"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-blog-api"
+  routes:
+  - application_name: "blog-api"
+    paths:
+    - "/*"
