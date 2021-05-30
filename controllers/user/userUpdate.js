@@ -41,7 +41,7 @@ module.exports = [
 
     body('description', 'Max length for profile description is 100 characters')
         .trim()
-        .isLength({ min: 1, max: 100 })
+        .isLength({ max: 100 })
         .optional(),
 
     body('newPassword')
