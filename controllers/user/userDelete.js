@@ -22,7 +22,7 @@ module.exports = [
         }),
 
     async (req, res, next) => {
-        
+
         if (req.params.id !== req.user._id.toString())
             return res.sendStatus(403);
 
@@ -33,11 +33,39 @@ module.exports = [
                 .json(errors.map(err => err.msg));
 
         try {
-            const usersPosts = (await Post.find({ user: req.params.id })).map(post => post._id);
+            const getIds = arr => arr.map(item => item._id);
+
+            const [userPostIds, userCommentIds] = await Promise.all([
+                Post.find({ author: req.user._id })
+                    .then(getIds),
+                Comment.find({ author: req.user._id })
+                    .then(getIds),
+            ]);
+
+            const [repliesToUserCommentIds, commentsUnderPostIds] = await Promise.all([
+                Comment.find({ comment: { $in: userCommentIds } })
+                    .then(getIds),
+                Comment.find({ post: { $in: userPostIds } })
+                    .then(getIds),
+            ]);
+
+            const repliesToCommentsUnderPostIds = await Comment
+                .find({ comment: { $in: commentsUnderPostIds } })
+                .then(getIds);
+
             const [deletedUser] = await Promise.all([
-                User.findByIdAndDelete(req.params.id),
-                Post.deleteMany({ author: req.params.id }),
-                ...usersPosts.map(post => Comment.deleteMany({ post })),
+                User.findByIdAndDelete(req.user._id),
+                Post.deleteMany({ author: req.user._id }),
+                Comment.deleteMany({
+                    _id: {
+                        $in: [
+                            ...userCommentIds,
+                            ...repliesToUserCommentIds,
+                            ...commentsUnderPostIds,
+                            ...repliesToCommentsUnderPostIds,
+                        ],
+                    },
+                }),
             ]);
 
             return res.json(deletedUser);
