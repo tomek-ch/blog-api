@@ -34,50 +34,50 @@ You can access the resources in a REST fashion like so:
 
 ### Users
 
-- `GET /users?username=<beginning of a username>`
+- `GET /users?username=<beginning of a username>`\
 Lists all users or only users whose usernames start with the provided string if `username` parameter is provided.
 
-- `GET /users/<username>`
+- `GET /users/<username>`\
 Returns information about a user with the provided `username` along with a list of their posts.
 
-- `POST /users`
+- `POST /users`\
 Takes a requests body with `username` (must be unique), `firstName` and a `password`. Optionally accepts `lastName` and `description`. Returns user data along with a token for authentication.
 
-- `PUT /users/<user id>`
+- `PUT /users/<user id>`\
 Protected route available only to the user with matching id. Takes a request body with any of the user fields that you want to update. Returns user data with newly updated fields. To update the password use `newPassword` field and provide the correct `oldPassword` .
 
-- `DELETE /users/<user id>`
+- `DELETE /users/<user id>`\
 Protected route available only to the user with matching id. Requires a request body  with `password` field. Deletes the user along with their posts and all of the comments related to their account (comments made by the user, comments under user's post, replies to all those comments). Returns deleted user's data.
 
 ### Posts
 
-- `GET /posts?author=<author id>&tags=<tag>&title=<beginning of the title>`
+- `GET /posts?author=<author id>&tags=<tag>&title=<beginning of the title>`\
 Returns a list of all published posts, optionally limited to only posts by one `author`, with a particular `tag` or with a `title` starting with the provided string. If used with the `Authorization` header, returns a list of all of the user's posts, published and unpublished.
 
-- `GET /posts/<post id>`
+- `GET /posts/<post id>`\
 Returns post data along with its comments.
 
-- `POST /posts`
+- `POST /posts`\
 Protected route. Takes a request body with a `title`, `excerpt`, `paragraphs` and `isPublished` fields. Optionally accepts an array of `tags`. Creates a post with the authorized user as the `author`.
 
-- `PUT /posts/<post id>`
+- `PUT /posts/<post id>`\
 Protected route available only to post's `author`. Takes a request body with any of the post fields that you want to update. Returns post data with newly updated fields.
 
-- `DELETE /posts/<post id>`
+- `DELETE /posts/<post id>`\
 Protected route available only to post's `author`. Deletes the post, comments under it and replies to them. Returns deleted post's data.
 
 ### Comments
 
-- `GET /comments?comment=<comment id>&author=<author id>&getPost=<boolean value>&newest=<boolean value>`
+- `GET /comments?comment=<comment id>&author=<author id>&getPost=<boolean value>&newest=<boolean value>`\
 Returns a list of comments which are replies to provided `comment` or written by provided `author`.  If `getPost` field is set to `true`, returned comments will have their `post` fields populated. `newest` specifies the order of the returned list.
 
-- `POST /comments`
+- `POST /comments`\
 Protected route. Takes a request body with a `text` field and either a `post` or a `comment` field, which is the id of the entity that you're replying to. Creates a comment with the authenticated `User` as the `author`.
 
-- `PUT /comments/<comment id>`
+- `PUT /comments/<comment id>`\
 Protected route available only to the comment's `author`. Takes a request body with a `text` field. Returns comment data with newly updated fields.
 
-- `DELETE /comments/<comment id>`
+- `DELETE /comments/<comment id>`\
 Protected route available only to the comment's `author`.  Deletes the comment along with replies to it, if it is top level, or decrements the `replyCount` of the comment that it was replying to.
 
 ## Authentication and authorization
@@ -95,20 +95,25 @@ To verify a token and fetch associated user's data, make an authorized request t
 Run the following commands to clone and install the project:
 
 `git clone https://github.com/tomek-ch/blog-api`
+<br>
 `cd blog-api`
+<br>
 `npm ci`
 
 If you wish to run this API on your machine, you need to create a `.env` file at the root of the project. It requires the following variables to be set:
 
 `DB_KEY=<mongodb connection string>`
+<br>
 `JWT_SECRET=<a secret string>`
 
 If you want to access this API from a client application, you should also add this variable for CORS:
 
 `CLIENT_URL=<client application url>`
 
-To run the API do: 
+To run the API do:
+
 `npm start`
 
-Or for development with nodemon: 
+Or for development with nodemon:
+
 `npm run dev`
