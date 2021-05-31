@@ -88,7 +88,7 @@ When creating a `User` using the `POST /users` endpoint, an object with a `token
 
 You can use the `POST /log-in` endpoint to request a token. It takes a request body with `username` and `password` fields corresponding to an existing `User` and returns the user data along with a token.
 
-To verify a token and fetch associated user's data, make an authorized request to the `/verify-user` endpoint.
+To verify a token and fetch associated user's data, make an authorized request to the `GET /verify-user` endpoint.
 
 ## Running locally
 
