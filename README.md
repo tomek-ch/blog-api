@@ -117,3 +117,7 @@ To run the API do:
 Or for development with nodemon:
 
 `npm run dev`
+
+To populate the database with sample data, you can run this script, passing your MongoDB connection string to it:
+
+`node utility/populateDb <connection string>`
