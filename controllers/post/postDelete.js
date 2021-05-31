@@ -10,7 +10,7 @@ module.exports = [
     async (req, res, next) => {
         try {
             if (!ObjectId.isValid(req.params.id))
-                return res.status(400).json(['Invalid comment id']);
+                return res.status(400).json(['Invalid post id']);
 
             const [post, comments] = await Promise.all([
                 Post.findById(req.params.id),
