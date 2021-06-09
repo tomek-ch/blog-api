@@ -6,6 +6,7 @@ const router = require('./routes/router');
 require('./config/passport');
 require('./config/mongoose');
 const helmet = require('helmet');
+const compression = require('compression');
 
 const app = express();
 app.use(cors({
@@ -14,6 +15,7 @@ app.use(cors({
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(helmet());
+app.use(compression());
 app.use(router);
 
 app.use((err, req, res, next) => {
