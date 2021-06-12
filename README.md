@@ -41,7 +41,7 @@ Lists all users or only users whose usernames start with the provided string if 
 Returns information about a user with the provided `username` along with a list of their posts.
 
 - `POST /users`\
-Takes a requests body with `username` (must be unique), `firstName` and a `password`. Optionally accepts `lastName` and `description`. Returns user data along with a token for authentication.
+Takes a request body with `username` (must be unique), `firstName` and a `password`. Optionally accepts `lastName` and `description`. Returns user data along with a token for authentication.
 
 - `PUT /users/<user id>`\
 Protected route available only to the user with matching id. Takes a request body with any of the user fields that you want to update. Returns user data with newly updated fields. To update the password use `newPassword` field and provide the correct `oldPassword` .
