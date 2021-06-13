@@ -2,6 +2,7 @@ const User = require('../../models/User');
 const { body, param, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const auth = require('../../middleware/authenticate');
+const getUpdateData = require('../../lib/getUpdateData');
 
 module.exports = [
 
@@ -72,12 +73,10 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const newData = ['firstName', 'lastName', 'description', 'username'].reduce((data, field) => {
-            const value = req.body[field];
-            if (value !== undefined)
-                return { ...data, [field]: value };
-            return data;
-        }, {});
+        const newData = getUpdateData(
+            ['firstName', 'lastName', 'description', 'username'],
+            req.body,
+        );
 
         const { newPassword } = req.body;
         try {

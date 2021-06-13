@@ -2,6 +2,7 @@ const User = require('../../models/User');
 const Post = require('../../models/Post');
 const { body, validationResult, param } = require('express-validator');
 const auth = require('../../middleware/authenticate');
+const getUpdateData = require('../../lib/getUpdateData');
 
 module.exports = [
 
@@ -84,13 +85,10 @@ module.exports = [
                 .status(400)
                 .json(errors.map(err => err.msg));
 
-        const newData = ['title', 'user', 'tags', 'paragraphs', 'isPublished', 'excerpt']
-            .reduce((data, field) => {
-                const value = req.body[field];
-                if (value !== undefined)
-                    return { ...data, [field]: value };
-                return data;
-            }, {});
+        const newData = getUpdateData(
+            ['title', 'user', 'tags', 'paragraphs', 'isPublished', 'excerpt'],
+            req.body,
+        );
 
         try {
             const post = await Post.findByIdAndUpdate(req.params.id, newData, { new: true });
