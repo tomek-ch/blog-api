@@ -13,6 +13,9 @@ module.exports = [
                 return res.status(400).json(['Invalid comment id']);
 
             const comment = await Comment.findById(req.params.id);
+            if (!comment)
+                return res.json(null);
+
             if (req.user._id.toString() !== comment.author.toString())
                 return res.sendStatus(403);
 
