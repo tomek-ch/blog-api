@@ -9,9 +9,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 
 const app = express();
-app.use(cors({
-    origin: process.env.CLIENT_URL,
-}));
+app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(helmet());
